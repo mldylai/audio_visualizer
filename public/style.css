@@ -5,14 +5,14 @@
   --grid-color: rgba(255, 240, 230, 0.05);
   --text-primary: #f3ede9;
   --text-secondary: #c2b8b2;
-  --text-highlight: #ff4e42;
-  --accent-primary: #ff4e42;
-  --accent-secondary: #c2362f;
-  --accent-tertiary: #ffb3ab;
-  --panel-bg: rgba(30, 26, 24, 0.7);
-  --panel-border: rgba(255, 78, 66, 0.3);
-  --panel-highlight: rgba(255, 78, 66, 0.1);
-  --scanner-line: rgba(255, 78, 66, 0.7);
+  --text-highlight: #42baff;
+  --accent-primary: #42cdff;
+  --accent-secondary: #2f93c2;
+  --accent-tertiary: #abe7ff;
+  --panel-bg: rgba(24, 27, 30, 0.353);
+  --panel-border: rgba(40, 154, 241, 0.676);
+  --panel-highlight: rgba(66, 189, 255, 0.1);
+  --scanner-line: rgba(66, 186, 255, 0.7);
 }
 
 * {
@@ -44,9 +44,9 @@ textarea {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("https://assets.codepen.io/7558/space-bg-002.jpg");
+  background-image: url("assets/space.jpg");
   background-size: cover;
-  background-position: center;
+  background-position: 25px center;
   z-index: 0;
   opacity: 0.8;
 }
@@ -545,7 +545,7 @@ textarea {
   height: 500px;
   border-radius: 50%;
   background: transparent;
-  border: 1px solid rgba(255, 78, 66, 0.1);
+  border: 1px solid rgba(66, 205, 255, 0.1);
   pointer-events: none;
   z-index: 3;
 }
@@ -559,7 +559,7 @@ textarea {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 1px solid rgba(255, 78, 66, 0.05);
+  border: 1px solid rgba(66, 205, 255, 0.05);
   animation: pulse 4s infinite;
 }
 

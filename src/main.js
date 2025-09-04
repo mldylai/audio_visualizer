@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.beginPath();
       ctx.arc(centerX, centerY, 3, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(255, 78, 66, 0.9)";
+      ctx.fillStyle = "rgba(66, 205, 255, 0.9)";
       ctx.fill();
       for (let c = 0; c < circleCount; c++) {
         const circlePhase = (time * 0.3 + c / circleCount) % 1;
@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const opacity = 1 - circlePhase;
         ctx.beginPath();
         ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(255, 78, 66, ${opacity * 0.2})`;
+        ctx.strokeStyle = `rgba(66, 205, 255, ${opacity * 0.2})`;
         ctx.lineWidth = 1;
         ctx.stroke();
         for (let i = 0; i < dotCount; i++) {
@@ -61,12 +61,12 @@ document.addEventListener("DOMContentLoaded", function () {
           ctx.beginPath();
           ctx.moveTo(centerX, centerY);
           ctx.lineTo(x, y);
-          ctx.strokeStyle = `rgba(255, 78, 66, ${opacity * 0.1})`;
+          ctx.strokeStyle = `rgba(66, 205, 255, ${opacity * 0.1})`;
           ctx.lineWidth = 1;
           ctx.stroke();
           ctx.beginPath();
           ctx.arc(x, y, size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 78, 66, ${opacity * 0.9})`;
+          ctx.fillStyle = `rgba(66, 205, 255, ${opacity * 0.9})`;
           ctx.fill();
         }
       }
@@ -410,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const baseRadius = Math.min(width, height) * 0.4;
     circularCtx.beginPath();
     circularCtx.arc(centerX, centerY, baseRadius * 1.2, 0, Math.PI * 2);
-    circularCtx.fillStyle = "rgba(255, 78, 66, 0.05)";
+    circularCtx.fillStyle = "rgba(66, 205, 255, 0.05)";
     circularCtx.fill();
     const numRings = 3;
     for (let ring = 0; ring < numRings; ring++) {
@@ -455,8 +455,8 @@ document.addEventListener("DOMContentLoaded", function () {
           centerY,
           ringRadius * 1.2
         );
-        gradient.addColorStop(0, `rgba(255, 78, 66, ${opacity})`);
-        gradient.addColorStop(1, `rgba(194, 54, 47, ${opacity * 0.7})`);
+        gradient.addColorStop(0, `rgba(66, 205, 255, ${opacity})`);
+        gradient.addColorStop(1, `rgba(54, 117, 136, ${opacity * 0.7})`);
       } else if (ring === 1) {
         gradient = circularCtx.createRadialGradient(
           centerX,
@@ -466,8 +466,8 @@ document.addEventListener("DOMContentLoaded", function () {
           centerY,
           ringRadius * 1.2
         );
-        gradient.addColorStop(0, `rgba(194, 54, 47, ${opacity})`);
-        gradient.addColorStop(1, `rgba(255, 179, 171, ${opacity * 0.7})`);
+        gradient.addColorStop(0, `rgba(54, 117, 136, ${opacity})`);
+        gradient.addColorStop(1, `rgba(111, 241, 255, ${opacity * 0.7})`);
       } else {
         gradient = circularCtx.createRadialGradient(
           centerX,
@@ -477,14 +477,14 @@ document.addEventListener("DOMContentLoaded", function () {
           centerY,
           ringRadius * 1.2
         );
-        gradient.addColorStop(0, `rgba(255, 179, 171, ${opacity})`);
-        gradient.addColorStop(1, `rgba(255, 78, 66, ${opacity * 0.7})`);
+        gradient.addColorStop(0, `rgba(111, 241, 255, ${opacity})`);
+        gradient.addColorStop(1, `rgba(66, 205, 255, ${opacity * 0.7})`);
       }
       circularCtx.strokeStyle = gradient;
       circularCtx.lineWidth = 2 + (numRings - ring);
       circularCtx.stroke();
       circularCtx.shadowBlur = 15;
-      circularCtx.shadowColor = "rgba(255, 78, 66, 0.7)";
+      circularCtx.shadowColor = "rgba(66, 167, 255, 0.7)";
     }
     circularCtx.shadowBlur = 0;
   }
@@ -514,7 +514,7 @@ document.addEventListener("DOMContentLoaded", function () {
       spectrumCtx.fillRect(x, height - barHeight, barWidth - 1, barHeight);
       x += barWidth;
     }
-    spectrumCtx.strokeStyle = "rgba(255, 78, 66, 0.2)";
+    spectrumCtx.strokeStyle = "rgba(66, 205, 255, 0.2)";
     spectrumCtx.lineWidth = 1;
     for (let i = 0; i < 5; i++) {
       const y = height * (i / 4);
@@ -530,7 +530,7 @@ document.addEventListener("DOMContentLoaded", function () {
       spectrumCtx.lineTo(x, height);
       spectrumCtx.stroke();
     }
-    spectrumCtx.fillStyle = "rgba(255, 78, 66, 0.7)";
+    spectrumCtx.fillStyle = "rgba(66, 189, 255, 0.7)";
     spectrumCtx.font = '10px "TheGoodMonolith", monospace';
     spectrumCtx.textAlign = "center";
     const freqLabels = ["0", "1K", "2K", "4K", "8K", "16K"];
@@ -553,7 +553,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const scale =
       1 + normalizedAverage * audioReactivity * (audioSensitivity / 5);
     wave.style.transform = `translate(-50%, -50%) scale(${scale})`;
-    wave.style.borderColor = `rgba(255, 78, 66, ${
+    wave.style.borderColor = `rgba(66, 205, 255, ${
       0.1 + normalizedAverage * 0.3
     })`;
   }
@@ -749,7 +749,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (audioAnalyser) {
       audioAnalyser.getByteTimeDomainData(audioData);
       waveformCtx.beginPath();
-      waveformCtx.strokeStyle = "rgba(255, 78, 66, 0.8)";
+      waveformCtx.strokeStyle = "rgba(66, 195, 255, 0.8)";
       waveformCtx.lineWidth = 2;
       const sliceWidth = width / audioData.length;
       let x = 0;
@@ -766,7 +766,7 @@ document.addEventListener("DOMContentLoaded", function () {
       waveformCtx.stroke();
     } else {
       waveformCtx.beginPath();
-      waveformCtx.strokeStyle = "rgba(255, 78, 66, 0.8)";
+      waveformCtx.strokeStyle = "rgba(66, 192, 255, 0.8)";
       waveformCtx.lineWidth = 1;
       const time = Date.now() / 1000;
       const sliceWidth = width / 100;
@@ -1053,7 +1053,7 @@ document.addEventListener("DOMContentLoaded", function () {
           value: 0
         },
         color: {
-          value: new THREE.Color(0xff4e42)
+          value: new THREE.Color(0xaaffff)
         },
         audioLevel: {
           value: 0
@@ -1181,7 +1181,7 @@ document.addEventListener("DOMContentLoaded", function () {
           value: 0
         },
         color: {
-          value: new THREE.Color(0xff4e42)
+          value: new THREE.Color(0x55ffff)
         },
         audioLevel: {
           value: 0
