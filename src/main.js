@@ -1,5 +1,6 @@
 import * as THREE from "https://esm.sh/three@0.175.0";
 import { OrbitControls } from "https://esm.sh/three@0.175.0/examples/jsm/controls/OrbitControls.js";
+import { setupExpandingCirclesPreloader } from "./visuals/preloader.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   setupExpandingCirclesPreloader();
@@ -22,60 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentAudioSrc = null;
   let currentMessageIndex = 0;
 
-  function setupExpandingCirclesPreloader() {
-    const canvas = document.getElementById("preloader-canvas");
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    let time = 0;
-    let lastTime = 0;
-    const maxRadius = 80;
-    const circleCount = 5;
-    const dotCount = 24;
-
-    function animate(timestamp) {
-      if (!lastTime) lastTime = timestamp;
-      const deltaTime = timestamp - lastTime;
-      lastTime = timestamp;
-      time += deltaTime * 0.001;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.beginPath();
-      ctx.arc(centerX, centerY, 3, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(66, 205, 255, 0.9)";
-      ctx.fill();
-      for (let c = 0; c < circleCount; c++) {
-        const circlePhase = (time * 0.3 + c / circleCount) % 1;
-        const radius = circlePhase * maxRadius;
-        const opacity = 1 - circlePhase;
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(66, 205, 255, ${opacity * 0.2})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        for (let i = 0; i < dotCount; i++) {
-          const angle = (i / dotCount) * Math.PI * 2;
-          const x = centerX + Math.cos(angle) * radius;
-          const y = centerY + Math.sin(angle) * radius;
-          const size = 2 * (1 - circlePhase * 0.5);
-          ctx.beginPath();
-          ctx.moveTo(centerX, centerY);
-          ctx.lineTo(x, y);
-          ctx.strokeStyle = `rgba(66, 205, 255, ${opacity * 0.1})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.arc(x, y, size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(66, 205, 255, ${opacity * 0.9})`;
-          ctx.fill();
-        }
-      }
-      if (document.getElementById("loading-overlay").style.display !== "none") {
-        requestAnimationFrame(animate);
-      }
-    }
-    requestAnimationFrame(animate);
-  }
   function initFloatingParticles() {
     const container = document.getElementById("floating-particles");
     const numParticles = 1000;
@@ -1482,45 +1429,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000);
   }
 
-  function makePanelDraggable(element, handle = null) {
-    Draggable.create(element, {
-      type: "x,y",
-      edgeResistance: 0.65,
-      bounds: document.body,
-      handle: handle || element,
-      inertia: true,
-      throwResistance: 0.85,
-      onDragStart: function () {
-        const panels = document.querySelectorAll(
-          ".terminal-panel, .control-panel, .spectrum-analyzer, .data-panel"
-        );
-        let maxZ = 10;
-        panels.forEach((panel) => {
-          const z = parseInt(window.getComputedStyle(panel).zIndex);
-          if (z > maxZ) maxZ = z;
-        });
-        element.style.zIndex = maxZ + 1;
-        addTerminalMessage(`PANEL DRAG INITIATED: ${element.className}`);
-      },
-      onDragEnd: function () {
-        addTerminalMessage(
-          `DRAGGABLE.INERTIA({TARGET: '${
-            element.className
-          }', VELOCITY: {X: ${this.getVelocity("x").toFixed(
-            2
-          )}, Y: ${this.getVelocity("y").toFixed(2)}}});`,
-          true
-        );
-      }
+  const bgMusic = document.getElementById("background-music");
+
+  function tryPlayMusic() {
+    bgMusic.play().catch(err => {
+      addTerminalMessage("Autoplay blocked, waiting for user interaction...");
     });
+    document.removeEventListener("click", tryPlayMusic); // only run once
   }
-  makePanelDraggable(
-    document.querySelector(".control-panel"),
-    document.getElementById("control-panel-handle")
-  );
-  makePanelDraggable(document.querySelector(".terminal-panel"));
-  makePanelDraggable(
-    document.querySelector(".spectrum-analyzer"),
-    document.getElementById("spectrum-handle")
-  );
+
+  document.addEventListener("click", tryPlayMusic);
+
+  const input = document.getElementById("question-input");
+  const button = document.getElementById("submit-question");
+
+  button.addEventListener("click", () => {
+    const question = input.value.trim();
+    if (question) {
+      addTerminalMessage(`You asked: ${question}`);
+    // TODO: send question to backend and get response
+      input.value = ""; // clear after submit
+    }
+  });
 });

@@ -162,6 +162,15 @@
   </div>
 </div>
 
+<div class="question-box">
+  <input 
+    type="text" 
+    id="question-input" 
+    placeholder="Ask a question..."
+  >
+  <button id="submit-question">SEND</button>
+</div>
+
 <div class="spectrum-analyzer">
   <div class="spectrum-header">
     <span>AUDIO SPECTRUM ANALYZER</span>
@@ -196,6 +205,11 @@
     </div>
   </div>
 </div>
+
+<audio id="background-music" autoplay loop>
+  <source src="assets/bg-music.mp3" type="audio/mp3">
+</audio>
+
 <script type="module" src="/src/main.js"></script>
 </body>
 </html>

@@ -2,9 +2,9 @@
 
 :root {
   --bg-color: #12100f;
-  --grid-color: rgba(255, 240, 230, 0.05);
-  --text-primary: #f3ede9;
-  --text-secondary: #c2b8b2;
+  --grid-color: rgba(230, 245, 255, 0.05);
+  --text-primary: #e9f1f3;
+  --text-secondary: #b2bec2;
   --text-highlight: #42baff;
   --accent-primary: #42cdff;
   --accent-secondary: #2f93c2;
@@ -380,7 +380,7 @@ textarea {
   position: absolute;
   left: 20px;
   bottom: 20px;
-  width: 500px;
+  width: 400px;
   height: 150px;
   background: var(--panel-bg);
   border: 1px solid var(--panel-border);
@@ -783,4 +783,38 @@ textarea {
   height: 100%;
   pointer-events: none;
   z-index: 4;
+}
+
+.question-box {
+  width: 350px;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 5px;
+  padding: 0.9375rem;
+  position: fixed;
+  top: 85%;
+  left: 35%;
+  backdrop-filter: blur(8px);
+  pointer-events: auto;
+  z-index: 10;
+}
+
+.question-box input {
+  padding: 6px 10px;
+  border: 1px solid var(--panel-border);
+  border-radius: 4px;
+  outline: none;
+  background: #00000046;
+  color: var(--text-primary);
+  width: 260px;
+}
+
+.question-box button {
+  background: var(--panel-highlight);
+  border: 1px solid var(--panel-border);
+  color: var(--accent-primary);
+  padding: 6px 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
 }
