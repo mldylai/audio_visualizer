@@ -333,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (let i = 0; i < 256; i++) {
       const barHeight =
         (frequencyData[i] / 255) * height * (audioSensitivity / 5);
-      const hue = 200 + (i / 256) * 40;
+      const hue = 180 + (i / 256) * 50;
       spectrumCtx.fillStyle = `hsl(${hue}, 100%, 50%)`;
       spectrumCtx.fillRect(x, height - barHeight, barWidth - 1, barHeight);
       x += barWidth;
