@@ -774,7 +774,6 @@ textarea {
   height: 100%;
 }
 
-/* Floating particles */
 .floating-particles {
   position: absolute;
   top: 0;
@@ -793,7 +792,7 @@ textarea {
   padding: 0.9375rem;
   position: fixed;
   top: 85%;
-  left: 35%;
+  left: 37%;
   backdrop-filter: blur(8px);
   pointer-events: auto;
   z-index: 10;

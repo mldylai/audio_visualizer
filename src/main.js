@@ -19,131 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let audioContextStarted = false;
   let audioSourceConnected = false;
   let currentAudioElement = null;
-  let floatingParticles = [];
   let currentAudioSrc = null;
   let currentMessageIndex = 0;
-
-  function initFloatingParticles() {
-    const container = document.getElementById("floating-particles");
-    const numParticles = 1000;
-
-    // Clear any existing particles
-    container.innerHTML = "";
-    floatingParticles = [];
-
-    // Get window dimensions for better positioning
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    const centerX = windowWidth / 2;
-    const centerY = windowHeight / 2;
-
-    for (let i = 0; i < numParticles; i++) {
-      const particle = document.createElement("div");
-      particle.className = "particle";
-      particle.style.position = "absolute";
-
-      // Make all particles the same small size
-      particle.style.width = "1.5px";
-      particle.style.height = "1.5px";
-      particle.style.backgroundColor = `rgba(255, ${
-        Math.floor(Math.random() * 100) + 78
-      }, ${Math.floor(Math.random() * 100) + 66}, ${
-        Math.random() * 0.5 + 0.2
-      })`;
-      particle.style.borderRadius = "50%";
-
-      // Create a large hollow area in the center
-      const minDistance = 200; // Minimum distance from center
-      const maxDistance = Math.max(windowWidth, windowHeight) * 0.8; // Use 80% of the larger dimension
-
-      // Use polar coordinates for even distribution
-      const angle = Math.random() * Math.PI * 2;
-
-      // Use square root distribution for more even radial distribution
-      // (prevents clustering at the center that happens with linear distribution)
-      const distanceFactor = Math.sqrt(Math.random());
-      const distance =
-        minDistance + distanceFactor * (maxDistance - minDistance);
-
-      // Calculate position
-      const x = Math.cos(angle) * distance + centerX;
-      const y = Math.sin(angle) * distance + centerY;
-
-      particle.style.left = x + "px";
-      particle.style.top = y + "px";
-
-      // Store particle properties for animation
-      const particleObj = {
-        element: particle,
-        x: x,
-        y: y,
-        speed: Math.random() * 0.5 + 0.1,
-        angle: Math.random() * Math.PI * 2,
-        angleSpeed: (Math.random() - 0.5) * 0.02,
-        amplitude: Math.random() * 50 + 20, // Increased amplitude for wider movement
-        size: 1.5, // Fixed size
-        pulseSpeed: Math.random() * 0.04 + 0.01,
-        pulsePhase: Math.random() * Math.PI * 2
-      };
-
-      floatingParticles.push(particleObj);
-      container.appendChild(particle);
-    }
-
-    // Start animation
-    animateFloatingParticles();
-  }
-
-  // Animate floating particles
-  function animateFloatingParticles() {
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-    let time = 0;
-
-    function updateParticles() {
-      time += 0.01;
-
-      floatingParticles.forEach((particle) => {
-        // Update angle
-        particle.angle += particle.angleSpeed;
-
-        // Calculate orbit around center with some drift
-        const orbitX = centerX + Math.cos(particle.angle) * particle.amplitude;
-        const orbitY = centerY + Math.sin(particle.angle) * particle.amplitude;
-
-        // Add some noise movement
-        const noiseX = Math.sin(time * particle.speed + particle.angle) * 5;
-        const noiseY =
-          Math.cos(time * particle.speed + particle.angle * 0.7) * 5;
-
-        // Apply movement without audio reactivity
-        const newX = orbitX + noiseX;
-        const newY = orbitY + noiseY;
-
-        // Update position
-        particle.element.style.left = newX + "px";
-        particle.element.style.top = newY + "px";
-
-        // Pulse size slightly without audio
-        const pulseFactor =
-          1 + Math.sin(time * particle.pulseSpeed + particle.pulsePhase) * 0.3;
-        const newSize = particle.size * pulseFactor;
-
-        particle.element.style.width = newSize + "px";
-        particle.element.style.height = newSize + "px";
-
-        // Adjust opacity based on pulse
-        const baseOpacity =
-          0.2 +
-          Math.sin(time * particle.pulseSpeed + particle.pulsePhase) * 0.1;
-        particle.element.style.opacity = Math.min(0.8, baseOpacity);
-      });
-
-      requestAnimationFrame(updateParticles);
-    }
-
-    requestAnimationFrame(updateParticles);
-  }
 
   function initAudio() {
     if (isAudioInitialized) return true;
@@ -156,12 +33,12 @@ document.addEventListener("DOMContentLoaded", function () {
       frequencyData = new Uint8Array(audioAnalyser.frequencyBinCount);
       audioAnalyser.connect(audioContext.destination);
       isAudioInitialized = true;
-      addTerminalMessage("AUDIO ANALYSIS SYSTEM INITIALIZED.");
-      showNotification("AUDIO ANALYSIS SYSTEM ONLINE");
+      addTerminalMessage("SYSTEM INITIALIZED.");
+      showNotification("SYSTEM ONLINE");
       return true;
     } catch (error) {
       console.error("Audio initialization error:", error);
-      addTerminalMessage("ERROR: AUDIO SYSTEM INITIALIZATION FAILED.");
+      addTerminalMessage("ERROR: SYSTEM INITIALIZATION FAILED.");
       showNotification("AUDIO SYSTEM ERROR");
       return false;
     }
@@ -456,7 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (let i = 0; i < 256; i++) {
       const barHeight =
         (frequencyData[i] / 255) * height * (audioSensitivity / 5);
-      const hue = (i / 256) * 20 + 0;
+      const hue = 200 + (i / 256) * 40;
       spectrumCtx.fillStyle = `hsl(${hue}, 100%, 50%)`;
       spectrumCtx.fillRect(x, height - barHeight, barWidth - 1, barHeight);
       x += barWidth;
@@ -536,11 +413,11 @@ document.addEventListener("DOMContentLoaded", function () {
     ).textContent = `${stabilityValue}%`;
     document.getElementById("stability-bar").style.width = `${stabilityValue}%`;
     if (stabilityValue < 40) {
-      document.getElementById("status-indicator").style.color = "#ff00a0";
+      document.getElementById("status-indicator").style.color = "#002fffff";
     } else if (stabilityValue < 70) {
-      document.getElementById("status-indicator").style.color = "#ffae00";
+      document.getElementById("status-indicator").style.color = "#009dffff";
     } else {
-      document.getElementById("status-indicator").style.color = "#ff4e42";
+      document.getElementById("status-indicator").style.color = "#42f6ffff";
     }
     if (Math.random() < 0.05) {
       document.getElementById("mass-value").textContent = (
@@ -569,11 +446,10 @@ document.addEventListener("DOMContentLoaded", function () {
     crypticMessageTimeout = setTimeout(() => {
       if (Date.now() - lastUserActionTime > 10000) {
         const messages = [
-          "GSAP.TO('#FILIP', {POSITION: 'WEBFLOW', DURATION: '3.0 QUANTUM_CYCLES'});",
-          "CONST FILIP = NEW DESIGNER({SKILLS: ['GSAP', 'THREEJS', 'WEBFLOW', 'NEURAL_UI']});",
-          "AWAIT WEBFLOW.HIRE(FILIP, {ROLE: 'DESIGNER', SALARY: 'COMPETITIVE'});",
-          "SYSTEM.INTEGRATE(FILIP.CREATIVITY, {TARGET: 'WEBFLOW_ECOSYSTEM', EFFICIENCY: 0.97});",
-          "TIMELINE.FORK({AGENT: 'FILIP', MISSION: 'ELEVATE_DIGITAL_EXPERIENCES', PROBABILITY: 0.998});"
+          "INTERACTIVE CORE ONLINE.",
+          "SCANNING FOR MEMORY FRAGMENTS...",
+          "CONST DEVELOPER = NEW HUMAN({NAME: 'MEL', SKILLS: ['CREATIVITY', 'CODE', 'DESIGN']});",
+          "DETECTING ACTIVITY FROM 'USER'",
         ];
 
         // Get the current message and increment the index
@@ -587,6 +463,7 @@ document.addEventListener("DOMContentLoaded", function () {
       scheduleCrypticMessages();
     }, delay);
   }
+
   document.addEventListener("mousemove", function () {
     lastUserActionTime = Date.now();
   });
@@ -603,9 +480,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   setTimeout(() => {
     scheduleCrypticMessages();
-    setTimeout(() => {
-      addTerminalMessage("FILIPPORTFOLIO.VERSION = 'EXCEPTIONAL';", true);
-    }, 15000);
+    setTimeout(() => {}, 15000);
   }, 10000);
   const loadingOverlay = document.getElementById("loading-overlay");
   setTimeout(() => {
@@ -631,8 +506,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const terminalContent = document.getElementById("terminal-content");
   const typingLine = terminalContent.querySelector(".typing");
   let messageQueue = [
-    "SYSTEM INITIALIZED. AUDIO ANALYSIS READY.",
-    "SCANNING FOR ANOMALIES IN FREQUENCY SPECTRUM."
+    "SYSTEM INITIALIZED. INTERACTION MODE READY.",
+    "AWAITING USER INPUT...",
   ];
 
   function typeNextMessage() {
@@ -1429,6 +1304,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000);
   }
 
+  // Play background music (initial user click required)
   const bgMusic = document.getElementById("background-music");
 
   function tryPlayMusic() {
@@ -1440,6 +1316,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.addEventListener("click", tryPlayMusic);
 
+  // Get user question
   const input = document.getElementById("question-input");
   const button = document.getElementById("submit-question");
 
@@ -1447,8 +1324,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const question = input.value.trim();
     if (question) {
       addTerminalMessage(`You asked: ${question}`);
-    // TODO: send question to backend and get response
+      showNotification(`YOU ASKED: ${question}`);
+    // TODO: send question to backend and get audio response
       input.value = ""; // clear after submit
     }
   });
+
 });
